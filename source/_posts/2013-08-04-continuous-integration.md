@@ -67,7 +67,7 @@ categories:
 
 ---
 
-##自动化build、自动化测试、自动化部署
+## 自动化build、自动化测试、自动化部署
 
 为项目选用合适的自动化build的工具是非常有必要的。
 
@@ -85,6 +85,7 @@ categories:
 ---
 
 ## 反馈和沟通
+
 * 及时向mainline提交代码，并在CI Master上重新构建
 * 保持快速build
 * 让每个人都能轻易获得最新的可执行文件
@@ -109,6 +110,8 @@ categories:
 * 在模拟生产环境中进行测试
 
 ---
+
 #### 参考文献
+
 * [持续集成（第二版）Martin Fowler](http://article.yeeyan.org/view/2251/94882)
 * [持续集成理论和实践的新进展 肖鹏](http://www.infoq.com/cn/articles/ci-theory-practice)
