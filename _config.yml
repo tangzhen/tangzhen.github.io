@@ -79,4 +79,4 @@ feed:
   limit: 20
 
 # Duoshuo
-disqus_shortname: ztang
+duoshuo_shortname: ztang
