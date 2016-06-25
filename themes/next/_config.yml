@@ -119,7 +119,11 @@ font:
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
 #social:
   #LinkLabel: Link
-
+# Social links
+social:
+  GitHub: https://github.com/tangzhen
+  Twitter: https://twitter.com/CloudTang
+  Weibo: http://weibo.com/cloudtang
 
 # Social Links Icons
 # Icon Mapping:
