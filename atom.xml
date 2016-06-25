@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-06-24T15:43:06.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Zhen Tang</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>RxSwift快速指南(一)</title>
+    <link href="http://yoursite.com/2016/06/24/quick-guide-for-RxSwift-one/"/>
+    <id>http://yoursite.com/2016/06/24/quick-guide-for-RxSwift-one/</id>
+    <published>2016-06-24T11:25:02.000Z</published>
+    <updated>2016-06-24T15:43:06.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;基本概念&quot;&gt;&lt;a href=&quot;#基本概念&quot; class=&quot;headerlink&quot; title=&quot;基本概念&quot;&gt;&lt;/a&gt;基本概念&lt;/h1&gt;&lt;p&gt;每个Observable队列都仅仅是一个简单的队列，Observable比Swift中的SequenceType优秀在于它能接受异步的元素，这是RxSwift的核心概念。&lt;/p&gt;
+&lt;h2 id=&quot;Event&quot;&gt;&lt;a href=&quot;#Event&quot; class=&quot;headerlink&quot; title=&quot;Event&quot;&gt;&lt;/a&gt;Event&lt;/h2&gt;&lt;p&gt;队列的语法： &lt;code&gt;Next* (Error | Completed)?&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Event是一个泛型枚举，一个队列中可以有0个或者多个Next元素，当队列中出现Error和Completed元素时，队列将不再接受Next元素。&lt;/p&gt;
+&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Event&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;Element&lt;/span&gt;&amp;gt;  &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;Next&lt;/span&gt;(&lt;span class=&quot;type&quot;&gt;Element&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;Error&lt;/span&gt;(&lt;span class=&quot;type&quot;&gt;ErrorType&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;Completed&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;创建一个Observable-aka-observable-sequence&quot;&gt;&lt;a href=&quot;#创建一个Observable-aka-observable-sequence&quot; class=&quot;headerlink&quot; title=&quot;创建一个Observable(aka observable sequence)&quot;&gt;&lt;/a&gt;创建一个Observable(aka observable sequence)&lt;/h2&gt;&lt;p&gt;在Observable+Creation中，RxSwift定义了很多帮助创建Observable的方法，例如&lt;code&gt;create&lt;/code&gt;, &lt;code&gt;empty&lt;/code&gt;, &lt;code&gt;never&lt;/code&gt;, &lt;code&gt;just&lt;/code&gt;, &lt;code&gt;error&lt;/code&gt;, &lt;code&gt;of&lt;/code&gt;, &lt;code&gt;deferred&lt;/code&gt;, &lt;code&gt;generate&lt;/code&gt;, &lt;code&gt;repeatElement&lt;/code&gt;和&lt;code&gt;using&lt;/code&gt;, 以及对SequenceType和Array的扩展方法&lt;code&gt;toObservable&lt;/code&gt;。&lt;/p&gt;
+&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;myJust&lt;/span&gt;&amp;lt;E&amp;gt;&lt;span class=&quot;params&quot;&gt;(element: E)&lt;/span&gt;&lt;/span&gt; -&amp;gt; &lt;span class=&quot;type&quot;&gt;Observable&lt;/span&gt;&amp;lt;&lt;span class=&quot;type&quot;&gt;E&lt;/span&gt;&amp;gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;Observable&lt;/span&gt;.create &amp;#123; observer &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        observer.on(.&lt;span class=&quot;type&quot;&gt;Next&lt;/span&gt;(element))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        observer.on(.&lt;span class=&quot;type&quot;&gt;Completed&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;NopDisposable&lt;/span&gt;.instance&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这里通过尾随闭包(Trailing Closures)来创建了一个Observable，create方法的定义是：&lt;/p&gt;
+&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(subscribe: &lt;span class=&quot;params&quot;&gt;(AnyObserver&amp;lt;E&amp;gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; -&amp;gt; &lt;span class=&quot;type&quot;&gt;Disposable&lt;/span&gt;) -&amp;gt; &lt;span class=&quot;type&quot;&gt;Observable&lt;/span&gt;&amp;lt;&lt;span class=&quot;type&quot;&gt;E&lt;/span&gt;&amp;gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;AnonymousObservable&lt;/span&gt;(subscribe)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这里subscribe其实是一个handler，接受一个Observer，返回一个Disposable对象，并作为AnonymousObservable的init参数传入。&lt;code&gt;AnyObserver&amp;lt;Element&amp;gt;&lt;/code&gt;实现了&lt;code&gt;ObserverType&lt;/code&gt;协议，我们在该handler内，将&lt;code&gt;Event&lt;/code&gt;通过&lt;code&gt;on&lt;/code&gt;发送到队列中去，最后返回的Disposable，Disposable在Observable被&lt;code&gt;subscribe&lt;/code&gt;后被返回，用作Observable的终止。&lt;/p&gt;
+&lt;h2 id=&quot;订阅一个Observable&quot;&gt;&lt;a href=&quot;#订阅一个Observable&quot; class=&quot;headerlink&quot; title=&quot;订阅一个Observable&quot;&gt;&lt;/a&gt;订阅一个Observable&lt;/h2&gt;&lt;p&gt;在Observable被创建后，我们会得到一个Observable，它实现了&lt;code&gt;ObservableType&lt;/code&gt;协议，在Observable+Extensions中，可以发现一些用于订阅的方法：&lt;code&gt;subscribe&lt;/code&gt;, &lt;code&gt;subscribeNext&lt;/code&gt;, &lt;code&gt;subscribeError&lt;/code&gt;和&lt;code&gt;subscribeCompleted&lt;/code&gt;。被创建的Observable是不会执行任何代码的，因为它只定义了Observable怎么被创建起来，只有在它被subscribe之后，队列才会真正被创建。&lt;/p&gt;
+&lt;figure class=&quot;highlight swift&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;subscribeNext&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(onNext: &lt;span class=&quot;params&quot;&gt;(E)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; -&amp;gt; &lt;span class=&quot;type&quot;&gt;Void&lt;/span&gt;) -&amp;gt; &lt;span class=&quot;type&quot;&gt;Disposable&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; observer = &lt;span class=&quot;type&quot;&gt;AnonymousObserver&lt;/span&gt;&amp;lt;&lt;span class=&quot;type&quot;&gt;E&lt;/span&gt;&amp;gt; &amp;#123; e &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; .&lt;span class=&quot;type&quot;&gt;Next&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;let&lt;/span&gt; value) = e &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        onNext(value)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;.subscribeSafe(observer)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;Observable的终止&quot;&gt;&lt;a href=&quot;#Observable的终止&quot; class=&quot;headerlink&quot; title=&quot;Observable的终止&quot;&gt;&lt;/a&gt;Observable的终止&lt;/h2&gt;&lt;p&gt;在一个subscription上调用&lt;code&gt;dispose&lt;/code&gt;将终止一个被观察的队列，在create时定义的Disposable的销毁代码会被执行。&lt;/p&gt;
+&lt;h1 id=&quot;生命周期&quot;&gt;&lt;a href=&quot;#生命周期&quot; class=&quot;headerlink&quot; title=&quot;生命周期&quot;&gt;&lt;/a&gt;生命周期&lt;/h1&gt;&lt;p&gt;在基本概念中，我们接触到了Event，Observable和Observer，他们的生命周期如图所示：&lt;/p&gt;
+&lt;img src=&quot;/2016/06/24/quick-guide-for-RxSwift-one/RxSwift.001.png&quot; alt=&quot;RxSwift life cycle&quot; title=&quot;RxSwift life cycle&quot;&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本节仅介绍了RxSwift中几个重要的概念和他们是怎么协同工作的，下一节将细化Observable的transform, filter和combine。&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;基本概念&quot;&gt;&lt;a href=&quot;#基本概念&quot; class=&quot;headerlink&quot; title=&quot;基本概念&quot;&gt;&lt;/a&gt;基本概念&lt;/h1&gt;&lt;p&gt;每个Observable队列都仅仅是一个简单的队列，Observable比Swift中的SequenceType优秀在于它能
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="RxSwift" scheme="http://yoursite.com/tags/RxSwift/"/>
+    
+      <category term="Swift" scheme="http://yoursite.com/tags/Swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Continuous Integration</title>
+    <link href="http://yoursite.com/2013/08/04/continuous-integration/"/>
+    <id>http://yoursite.com/2013/08/04/continuous-integration/</id>
+    <published>2013-08-04T12:11:00.000Z</published>
+    <updated>2016-06-24T11:22:10.000Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;持续集成能干什么&quot;&gt;&lt;a href=&quot;#持续集成能干什么&quot; class=&quot;headerlink&quot; title=&quot;持续集成能干什么&quot;&gt;&lt;/a&gt;持续集成能干什么&lt;/h2&gt;&lt;hr&gt;
+&lt;p&gt;在以往传统的开发中，集成往往被放在开发周期的后期–联调，这样的后果就是在开发过程中得到一个不可预知的联调阶段。联调阶段往往在传统开发模式中最为艰苦的一个阶段。&lt;/p&gt;
+&lt;h3 id=&quot;联调中主要问题&quot;&gt;&lt;a href=&quot;#联调中主要问题&quot; class=&quot;headerlink&quot; title=&quot;联调中主要问题&quot;&gt;&lt;/a&gt;联调中主要问题&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在开发初期没有考虑好的架构、接口等问题。&lt;/li&gt;
+&lt;li&gt;由于单独模块开发时可能使用不相同的运行环境，集成后环境不统一，造成的程序运行不稳当。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;持续集成的出现，旨意解决在联调中出现问题，持续集成，将联调进行拆分，分成步骤很小的集成，分散到整个开发过程中，而不是把集成放到软件开发的末期。&lt;/p&gt;
+&lt;h3 id=&quot;持续集成的好处&quot;&gt;&lt;a href=&quot;#持续集成的好处&quot; class=&quot;headerlink&quot; title=&quot;持续集成的好处&quot;&gt;&lt;/a&gt;持续集成的好处&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;由于将集成放到了每个开发周期，一旦有集成的问题，能够及时的发现，并进行修复。&lt;/li&gt;
+&lt;li&gt;解决频繁部署的问题，可以及时的将测试版本交由客户，从而及时得到客户的反馈，保证开发的系统确实的用户所需要的。&lt;/li&gt;
+&lt;li&gt;由于每次集成后构建，都可以得到一个可运行的系统，从另一方面考虑，降低了客户的资金风险。&lt;/li&gt;
+&lt;li&gt;持续集成过程中使用到一些自动化构建测试大大降低了工作量，虽然初期需要花比较成的时间搭建持续集成环境，但是长远考虑，这是有利的。&lt;/li&gt;
+&lt;li&gt;持续集成，能够将项目的当前状况，及时反馈给每一个开发者，从而降低了开发过程中的交流成本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;只维护一个源码仓库&quot;&gt;&lt;a href=&quot;#只维护一个源码仓库&quot; class=&quot;headerlink&quot; title=&quot;只维护一个源码仓库&quot;&gt;&lt;/a&gt;只维护一个源码仓库&lt;/h2&gt;&lt;p&gt;源代码管理系统现在多用分布式的git，需要注意是：需将所有文件都放进源代码管理系统，除了代码外，还需要将相关测试脚本，配置文件，数据库Schema，安装脚本，第三方库，甚至IDE的配置文件。以确保一个原则：&lt;strong&gt;任何人都可以找到一台干净的机器，做一次取出（checkout）动作，然后对系统执行一次完整的构建。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用同一个源码仓库的优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使得每个协同工作的worker，都能快速的获得同样的、最新的代码，保证了&lt;strong&gt;集成的时效性&lt;/strong&gt;，并能&lt;strong&gt;快速找出集成中出现的问题&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;在开发过程中，如果需要增加worker，一次checkout就能让其马上立即得到可行的工作环境。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;使用持续集成构建&quot;&gt;&lt;a href=&quot;#使用持续集成构建&quot; class=&quot;headerlink&quot; title=&quot;使用持续集成构建&quot;&gt;&lt;/a&gt;使用持续集成构建&lt;/h2&gt;&lt;h3 id=&quot;构建流程&quot;&gt;&lt;a href=&quot;#构建流程&quot; class=&quot;headerlink&quot; title=&quot;构建流程&quot;&gt;&lt;/a&gt;构建流程&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;http://www.infoq.com/resource/articles/ci-theory-practice/zh/resources/image1.png&quot; alt=&quot;持续集成构建&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更新&lt;ul&gt;
+&lt;li&gt;每次在编辑代码前，需要从源码仓库中更新的代码，保证本地代码和代码仓库中的代码一致，为最新代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编辑代码&lt;ul&gt;
+&lt;li&gt;编辑代码完成尽量小的一个feature和对应的测试代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;本地构建&lt;ul&gt;
+&lt;li&gt;对修改的代码进行自测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;更新&lt;ul&gt;
+&lt;li&gt;再次从源码仓库中更新代码，因为在完成feature的同时，可能有其他人提交有新的代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;本地构建&lt;ul&gt;
+&lt;li&gt;再次本地构建，保证新从仓库中检出的代码，和自己开发的feature没有集成错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;提交&lt;ul&gt;
+&lt;li&gt;将代码提交到代码仓库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;提交构建&lt;ul&gt;
+&lt;li&gt;该步骤一般可又CI系统在代码提交后自动进行构建。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在构建中，一般分为这7个步骤。在一个步骤中，一般又可划分为多个小步骤。例如编辑代码步骤，在完成一个feature的时候，一般可将这个feature进行再拆分，每完成一个更小的feature后，使用git commit到local repository，保证代码在出现问题的时候，能够方便的进行git reset。&lt;/p&gt;
+&lt;p&gt;需要注意的步骤是step 6，setp 1~5因为都是local repository的操作，在做错后可以回滚，step 6会将本地代码push到remote repository中。所以，&lt;strong&gt;步骤6的前置本地构建，必须通过，通过所有测试，才能执行step 6.&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;自动化build、自动化测试、自动化部署&quot;&gt;&lt;a href=&quot;#自动化build、自动化测试、自动化部署&quot; class=&quot;headerlink&quot; title=&quot;自动化build、自动化测试、自动化部署&quot;&gt;&lt;/a&gt;自动化build、自动化测试、自动化部署&lt;/h2&gt;&lt;p&gt;为项目选用合适的自动化build的工具是非常有必要的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以把源码转变成一个可运行的系统这个过程简单化。&lt;/li&gt;
+&lt;li&gt;智能的build工具，可以检查源码之间的依赖项和修改项，选择性的编译，降低大型build的时间。&lt;/li&gt;
+&lt;li&gt;build脚本允许在不同的情况中build不同的target。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自动化工具，可选用ant，maven，gradle等，IDE也会有对应的命令行工具，如MSBuild，xcodebuild等，当然还有一些工具如shell，PowerShell等，也会在自动化build中使用&lt;/p&gt;
+&lt;p&gt;开发者在开发时，可以使用IDE作为build工具，但是主build还是需要自动化的build工具，以保证他可以在开发服务器上运行。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自动化测试，极限编程（Extreme Programming）和驱动测试开发（TDD）待续。。。&lt;/li&gt;
+&lt;li&gt;自动化部署待续。。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;反馈和沟通&quot;&gt;&lt;a href=&quot;#反馈和沟通&quot; class=&quot;headerlink&quot; title=&quot;反馈和沟通&quot;&gt;&lt;/a&gt;反馈和沟通&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;及时向mainline提交代码，并在CI Master上重新构建&lt;/li&gt;
+&lt;li&gt;保持快速build&lt;/li&gt;
+&lt;li&gt;让每个人都能轻易获得最新的可执行文件&lt;/li&gt;
+&lt;li&gt;每个人都能看到进度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上这些步骤，都是为了一个目的：沟通。&lt;br&gt;沟通的角色有开发环节中的各个角色，以及和客户直接，每次DEV在开发完一个feature后，提交代码，在CI Master上进行重新构建，构建的结果将显示的公共的显示器上，以便于每个worker都能及时的查看到结果和进度。&lt;br&gt;保持快速build以及让每个人都能轻易获得最新的可执行文件，为了就是能够尽快从其他worker和客户那里获得反馈，保证了沟通的畅通性。&lt;/p&gt;
+&lt;h3 id=&quot;分阶段构建（Staged-Build）&quot;&gt;&lt;a href=&quot;#分阶段构建（Staged-Build）&quot; class=&quot;headerlink&quot; title=&quot;分阶段构建（Staged Build）&quot;&gt;&lt;/a&gt;分阶段构建（Staged Build）&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;分离关注度不同的验证阶段。&lt;/li&gt;
+&lt;li&gt;构建流程可视化。&lt;/li&gt;
+&lt;li&gt;通过分阶段并发构建来缩短反馈周期。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;构建的过程一般会耗费很长时间，可将构建工作分为多个job，并行进行构建。这点在Jenkins中可轻松完成。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;其他技巧&quot;&gt;&lt;a href=&quot;#其他技巧&quot; class=&quot;headerlink&quot; title=&quot;其他技巧&quot;&gt;&lt;/a&gt;其他技巧&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在模拟生产环境中进行测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4 id=&quot;参考文献&quot;&gt;&lt;a href=&quot;#参考文献&quot; class=&quot;headerlink&quot; title=&quot;参考文献&quot;&gt;&lt;/a&gt;参考文献&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://article.yeeyan.org/view/2251/94882&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;持续集成（第二版）Martin Fowler&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.infoq.com/cn/articles/ci-theory-practice&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;持续集成理论和实践的新进展 肖鹏&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;持续集成能干什么&quot;&gt;&lt;a href=&quot;#持续集成能干什么&quot; class=&quot;headerlink&quot; title=&quot;持续集成能干什么&quot;&gt;&lt;/a&gt;持续集成能干什么&lt;/h2&gt;&lt;hr&gt;
+&lt;p&gt;在以往传统的开发中，集成往往被放在开发周期的后期–联调，这样的后果就是在开发过程中
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
