@@ -233,6 +233,119 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/03/quick-guide-for-RxSwift-three/" itemprop="url">
+                  RxSwift快速指南(三)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-03T14:26:33+08:00" content="2016-07-03">
+              2016-07-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/03/quick-guide-for-RxSwift-three/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/03/quick-guide-for-RxSwift-three/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h1><p>Filter的操作即为过滤，是将Observable队列中不需要的Element去掉，RxSwift为我们提供了例如<code>debounce \ throttle</code>, <code>distinctUntilChanged</code>, <code>elementAt</code>, <code>filter</code>, <code>sample</code>, <code>skip</code>, <code>take</code>, <code>takeLast</code>和<code>single</code>的方法。</p>
+<h2 id="debounce"><a href="#debounce" class="headerlink" title="debounce"></a>debounce</h2><p>debounce和throttle其实是一样的，队列中的元素如果和下一个元素的间隔小于了指定的时间间隔，那么这个元素将被过滤掉。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> times = [</span><br><span class="line">    [ <span class="string">"value"</span>: <span class="number">0</span>, <span class="string">"time"</span>: <span class="number">0.1</span> ],</span><br><span class="line">    [ <span class="string">"value"</span>: <span class="number">1</span>, <span class="string">"time"</span>: <span class="number">0.4</span> ],</span><br><span class="line">    [ <span class="string">"value"</span>: <span class="number">2</span>, <span class="string">"time"</span>: <span class="number">0.6</span> ],</span><br><span class="line">    [ <span class="string">"value"</span>: <span class="number">3</span>, <span class="string">"time"</span>: <span class="number">0.8</span> ],</span><br><span class="line">    [ <span class="string">"value"</span>: <span class="number">4</span>, <span class="string">"time"</span>: <span class="number">1.0</span> ],</span><br><span class="line">    [ <span class="string">"value"</span>: <span class="number">5</span>, <span class="string">"time"</span>: <span class="number">1.4</span> ]</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">times.toObservable()</span><br><span class="line">    .flatMap &#123; item <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Observable</span>.of(item[<span class="string">"value"</span>]!)</span><br><span class="line">            .delaySubscription(<span class="type">Double</span>(item[<span class="string">"time"</span>]!), scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    &#125;</span><br><span class="line">    .debounce(<span class="number">0.2</span>, scheduler: <span class="type">MainScheduler</span>.instance)</span><br><span class="line">    .subscribe &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;</span><br></pre></td></tr></table></figure>
+<p>代码输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Next(0.0)</span><br><span class="line">Next(4.0)</span><br><span class="line">Next(5.0)</span><br><span class="line">Completed</span><br></pre></td></tr></table></figure>
+<h2 id="distinctUntilChanged"><a href="#distinctUntilChanged" class="headerlink" title="distinctUntilChanged"></a>distinctUntilChanged</h2><p>如果队列中出现相同Element，将被过滤掉。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line"></span><br><span class="line"><span class="type">Observable</span>.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line">    .distinctUntilChanged()</span><br><span class="line">    .subscribe &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;</span><br><span class="line">    .addDisposableTo(disposeBag)</span><br></pre></td></tr></table></figure>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> disposeBag = <span class="type">DisposeBag</span>()</span><br><span class="line"></span><br><span class="line"><span class="type">Observable</span>.of(</span><br><span class="line">    <span class="string">"aa"</span>, <span class="string">"ab"</span>, <span class="string">"ac"</span>,</span><br><span class="line">    <span class="string">"bb"</span>, <span class="string">"aa"</span>, <span class="string">"cc"</span>,</span><br><span class="line">    <span class="string">"ca"</span>, <span class="string">"bc"</span>, <span class="string">"aa"</span>)</span><br><span class="line">    .<span class="built_in">filter</span> &#123; $<span class="number">0</span> == <span class="string">"aa"</span> &#125;</span><br><span class="line">    .subscribeNext &#123; <span class="built_in">print</span>($<span class="number">0</span>) &#125;</span><br><span class="line">    .addDisposableTo(disposeBag)</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">filter</span><span class="params">(predicate: <span class="params">(E)</span></span></span> <span class="keyword">throws</span> -&gt; <span class="type">Bool</span>) -&gt; <span class="type">Observable</span>&lt;<span class="type">E</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Filter</span>(source: asObservable(), predicate: predicate)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和其他FP中的filter一样，predicate返回值为布尔值，true则保留这个Element，返回false时这个Element将被过滤掉。</p>
+<h2 id="sample"><a href="#sample" class="headerlink" title="sample"></a>sample</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tap = <span class="type">Observable</span>&lt;<span class="type">NSInteger</span>&gt;.interval(<span class="number">0.6</span>, scheduler: <span class="type">SerialDispatchQueueScheduler</span>(internalSerialQueueName: <span class="string">"tap"</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> timerSubscribe = <span class="type">Observable</span>&lt;<span class="type">NSInteger</span>&gt;.interval(<span class="number">0.1</span>, scheduler: <span class="type">SerialDispatchQueueScheduler</span>(internalSerialQueueName: <span class="string">"timer"</span>))</span><br><span class="line">   .sample(tap)</span><br><span class="line">   .subscribeNext(&#123; msecs -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">       <span class="built_in">print</span>(<span class="string">"<span class="subst">\(msecs)</span>00ms"</span>)</span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line"><span class="type">NSThread</span>.sleepForTimeInterval(<span class="number">4</span>)</span><br><span class="line">timerSubscribe.dispose()</span><br></pre></td></tr></table></figure>
+<p>sample字面意思是简化，通过参数的队列来简化源队列，在官方的Example中没有找到对应例子，官方的描述也是让人想不出来这个方法适用于什么地方，直到看这个<a href="http://rx-marin.com/post/rxswift-rxcocoa-sample-split-laps-timer/" target="_blank" rel="external">这篇博客</a>才豁然开朗，需注意的是，参数队列中的元素值将被忽略。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>其他方法都比较简单，通过方法名都能知道在干什么，官方的playground中也能找到对应的实例，这里就不一一阐述了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/06/27/quick-guide-for-RxSwift-two/" itemprop="url">
                   RxSwift快速指南(二)
                 </a>
@@ -699,7 +812,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
