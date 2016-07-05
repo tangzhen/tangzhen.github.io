@@ -132,3 +132,23 @@ charValues[1].value = "d"   // nothing happen
 {% asset_img flatMapLatest.png flatMapLatest %}
 
 和`flatMap`一样，`flatMapLatest`也会新生成一个Observable的队列，但不同的是它不会合并所有的新Observable中的Element，它会switch到最后一个Observable上（`switchMap`这个名字感觉更容易让人理解一点），先前建立的Observable将不再被监听，所以代码中charValues只有最后一个Observable还在被subscribe。
+
+## scan
+
+```swift
+let disposeBag = DisposeBag()
+Observable.range(start: 1, count: 3)
+    .scan(0) { $0 + $1 }
+    .subscribe { print($0) }
+    .addDisposableTo(disposeBag)
+```
+
+`scan`和swift的原生方法reduce和类似，在Observable+Single中我们能够找到它的定义：
+
+```swift
+public func scan<A>(seed: A, accumulator: (A, E) throws -> A) -> Observable<A> {
+    return Scan(source: self.asObservable(), seed: seed, accumulator: accumulator)
+}
+```
+
+`seed`的scan开始的初始值，`accumulator`的第一个参数为上一次操作的返回值，第二个参数为Observable队列中的Element，然后返回处理结果。
