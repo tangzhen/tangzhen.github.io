@@ -95,6 +95,8 @@ timerSubscribe.dispose()
 
 sample字面意思是简化，通过参数的队列来简化源队列，在官方的Example中没有找到对应例子，官方的描述也是让人想不出来这个方法适用于什么地方，直到看这个[这篇博客](http://rx-marin.com/post/rxswift-rxcocoa-sample-split-laps-timer/)才豁然开朗，需注意的是，参数队列中的元素值将被忽略。
 
+{% asset_img sample.png sample %}
+
 ## 其他
 
 其他方法都比较简单，通过方法名都能知道在干什么，官方的playground中也能找到对应的实例，这里就不一一阐述了。
