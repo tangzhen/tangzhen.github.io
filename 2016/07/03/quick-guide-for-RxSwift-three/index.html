@@ -92,11 +92,13 @@ debouncedebounce和throttle其实是一样的，队列">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="FilterFilter的操作即为过滤，是将Observable队列中不需要的Element去掉，RxSwift为我们提供了例如debounce \ throttle, distinctUntilChanged, elementAt, filter, sample, skip, take, takeLast和single的方法。
 debouncedebounce和throttle其实是一样的，队列">
-<meta property="og:updated_time" content="2016-07-04T00:21:45.000Z">
+<meta property="og:image" content="http://yoursite.com/2016/07/03/quick-guide-for-RxSwift-three/sample.png">
+<meta property="og:updated_time" content="2016-07-05T13:56:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RxSwift快速指南(三)">
 <meta name="twitter:description" content="FilterFilter的操作即为过滤，是将Observable队列中不需要的Element去掉，RxSwift为我们提供了例如debounce \ throttle, distinctUntilChanged, elementAt, filter, sample, skip, take, takeLast和single的方法。
 debouncedebounce和throttle其实是一样的，队列">
+<meta name="twitter:image" content="http://yoursite.com/2016/07/03/quick-guide-for-RxSwift-three/sample.png">
 
 
 
@@ -293,6 +295,7 @@ debouncedebounce和throttle其实是一样的，队列">
 <p>和其他FP中的filter一样，predicate返回值为布尔值，true则保留这个Element，返回false时这个Element将被过滤掉。</p>
 <h2 id="sample"><a href="#sample" class="headerlink" title="sample"></a>sample</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tap = <span class="type">Observable</span>&lt;<span class="type">NSInteger</span>&gt;.interval(<span class="number">0.6</span>, scheduler: <span class="type">SerialDispatchQueueScheduler</span>(internalSerialQueueName: <span class="string">"tap"</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> timerSubscribe = <span class="type">Observable</span>&lt;<span class="type">NSInteger</span>&gt;.interval(<span class="number">0.1</span>, scheduler: <span class="type">SerialDispatchQueueScheduler</span>(internalSerialQueueName: <span class="string">"timer"</span>))</span><br><span class="line">   .sample(tap)</span><br><span class="line">   .subscribeNext(&#123; msecs -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">       <span class="built_in">print</span>(<span class="string">"<span class="subst">\(msecs)</span>00ms"</span>)</span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line"><span class="type">NSThread</span>.sleepForTimeInterval(<span class="number">4</span>)</span><br><span class="line">timerSubscribe.dispose()</span><br></pre></td></tr></table></figure>
 <p>sample字面意思是简化，通过参数的队列来简化源队列，在官方的Example中没有找到对应例子，官方的描述也是让人想不出来这个方法适用于什么地方，直到看这个<a href="http://rx-marin.com/post/rxswift-rxcocoa-sample-split-laps-timer/" target="_blank" rel="external">这篇博客</a>才豁然开朗，需注意的是，参数队列中的元素值将被忽略。</p>
+<img src="/2016/07/03/quick-guide-for-RxSwift-three/sample.png" alt="sample" title="sample">
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>其他方法都比较简单，通过方法名都能知道在干什么，官方的playground中也能找到对应的实例，这里就不一一阐述了。</p>
 
       
