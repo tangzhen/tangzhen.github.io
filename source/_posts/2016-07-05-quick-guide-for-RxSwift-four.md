@@ -113,7 +113,7 @@ Observable.range(start: 0, count: 3)
     .addDisposableTo(disposeBag)
 ```
 
-这里是实例map后再switchLatest和flatMapLatest的结果的是一样的，需要理解的switch队列以后，以前队列的Element将不在发送。
+map后再switchLatest其实和flatMapLatest的结果是一样的，需要理解的是switch队列以后，以前队列的Element将不在发送。
 
 {% asset_img switchLatest.png switchLatest %}
 
