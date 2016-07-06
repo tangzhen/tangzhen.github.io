@@ -9,7 +9,7 @@ tags:
 
 # Combine
 
-有时数据源并不只一个，比如用户登录，我们需要将用户名和密码惊喜合并验证，这时我们可以使用RxSwift为我们提供的合并，`combineLatest`, `merge`, `startWith`, `switchLatest`和`zip`等。
+有时数据源并不只一个，比如用户登录，我们需要将用户名和密码进行合并验证，这时我们可以使用RxSwift为我们提供的合并，`combineLatest`, `merge`, `startWith`, `switchLatest`和`zip`等。
 
 ## combineLatest
 
