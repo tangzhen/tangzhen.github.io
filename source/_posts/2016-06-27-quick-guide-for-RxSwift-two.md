@@ -143,7 +143,7 @@ Observable.range(start: 1, count: 3)
     .addDisposableTo(disposeBag)
 ```
 
-`scan`和swift的原生方法reduce和类似，在Observable+Single中我们能够找到它的定义：
+`scan`和swift的原生方法reduce很类似（区别在于scan后的Element数量和源Element数量一致，但是reduce只会返回一个Element），在Observable+Single中我们能够找到它的定义：
 
 ```swift
 public func scan<A>(seed: A, accumulator: (A, E) throws -> A) -> Observable<A> {
